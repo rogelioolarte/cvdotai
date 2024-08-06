@@ -1,2 +1,2 @@
-# cvdotai
+# CV dot AI
 In progress...

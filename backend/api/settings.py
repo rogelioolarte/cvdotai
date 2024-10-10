@@ -81,7 +81,7 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    '127.0.0.1',
+    "http://localhost:4200",
     "https://cvdotai.vercel.app",
 ]
 

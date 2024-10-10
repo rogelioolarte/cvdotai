@@ -63,7 +63,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(this.processPdf.sendGet().subscribe({
       next: (response) => {
-        if (response) {
+        if (response.status == 200) {
           console.log('backend good');
         }
       },

@@ -34,7 +34,7 @@ def post(request):
 
         
         text_from_pdf = extract_text_from_pdf(pdf_file)
-        if(len(text_from_pdf) > 0):
+        if(len(text_from_pdf) < 0):
             return JsonResponse({'error': 'The PDF file does not have valid text.'}, status=500)
 
         genai.configure(api_key=os.environ.get("API_KEY"))

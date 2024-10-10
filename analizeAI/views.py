@@ -1,4 +1,4 @@
-# example/views.py
+# analizeAI/views.py
 from datetime import datetime
 
 from django.http import HttpResponse

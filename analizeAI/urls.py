@@ -1,7 +1,7 @@
-# example/urls.py
+# analizeAI/urls.py
 from django.urls import path
 
-from example.views import index
+from analizeAI.views import index
 
 
 urlpatterns = [

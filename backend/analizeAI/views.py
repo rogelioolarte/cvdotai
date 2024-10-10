@@ -47,7 +47,7 @@ def post(request):
             system_instruction="""
                 You are an experienced Resume reviewer.
                 Your task is to analyze the Resume and Job Description.
-                Respond in Spanish.
+                Respond in the language of your resume.
             """,
             generation_config=genai.GenerationConfig(temperature=0.5),
         )

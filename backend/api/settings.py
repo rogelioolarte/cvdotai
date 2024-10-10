@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'localhost',
+    "localhost:4200",
     "https://cvdotai.vercel.app",
 ]
 

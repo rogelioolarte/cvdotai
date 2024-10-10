@@ -5,6 +5,7 @@ from datetime import datetime
 
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import google.generativeai as genai
 
 def index(request):
@@ -19,6 +20,7 @@ def index(request):
     '''
     return HttpResponse(html)
 
+@csrf_exempt
 def post(request):
     # Aquí puedes procesar el archivo PDF y la descripción del trabajo
 

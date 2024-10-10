@@ -67,7 +67,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      jobDescription: ['', [Validators.required, Validators.minLength(100), Validators.maxLength(2000)]],
+      jobDescription: ['', [Validators.required, Validators.minLength(100), Validators.maxLength(3000)]],
       filename: ['', [Validators.required, Validators.pattern(/.+\.pdf$/)]],
     });
   }

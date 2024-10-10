@@ -4,7 +4,7 @@
     <div class="input-list">
       <div class="job-input">
         <mat-form-field appearance="fill">
-          <mat-label aria-hidden="true" >Job Description</mat-label>
+          <mat-label aria-hidden="true" >Write your job description here...</mat-label>
           <textarea
             matInput
             id="job-description"
@@ -19,7 +19,7 @@
                 <span>The description must be greater than 100 characters.</span>
               }
               @if(jobDescription?.errors?.['maxlength'] && jobDescription?.touched){
-                <span>The description cannot exceed 500 characters</span>
+                <span>The description cannot exceed 3000 characters</span>
               }
             </mat-error>
           }
@@ -59,7 +59,7 @@
 
   @if(recommendations){
     <div class="recommendations">
-      <h2 class="recommendations-title">{{ recommendations.title }}</h2>
+      <h2 class="recommendations-title">{{ recommendations.title || "Recommendations" }}</h2>
 
       <div class="simple-recommendations">
         @for(recommendation of recommendations.simpleParagraphs; track recommendation){

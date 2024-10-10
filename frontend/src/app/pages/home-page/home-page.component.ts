@@ -61,6 +61,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this._snackBar.open(text, closeText, {
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
+      duration: 2000
     });
   }
 

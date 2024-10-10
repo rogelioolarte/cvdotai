@@ -1,10 +1,10 @@
-<div class="container">
+<div class="container" role="main" >
   <h1 class="title">Recommendations for your CV</h1>
   <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="form">
     <div class="input-list">
       <div class="job-input">
         <mat-form-field appearance="fill">
-          <mat-label>Job Description</mat-label>
+          <mat-label aria-hidden="true" >Job Description</mat-label>
           <textarea
             matInput
             id="job-description"
@@ -13,7 +13,7 @@
           @if(jobDescription?.invalid && (jobDescription?.dirty || jobDescription?.touched)){
             <mat-error>
               @if(jobDescription?.errors?.['required'] && jobDescription?.touched){
-                <span>This field is required</span>
+                <span >This field is required</span>
               }
               @if(jobDescription?.errors?.['minlength'] && jobDescription?.touched){
                 <span>The description must be greater than 100 characters.</span>
@@ -26,16 +26,17 @@
         </mat-form-field>
       </div>
       <div class="file-input">
-        <mat-label class="hidden">Upload CV (PDF)</mat-label>
+        <mat-label class="hidden" aria-hidden="false" >Upload CV (PDF)</mat-label>
         <input
           id="cv-upload"
           type="file"
           accept=".pdf"
           (change)="handleFileInput($event)"
           class="hidden"
+          aria-hidden="true"
         />
         <button mat-button type="button" (click)="triggerFileUpload()" class="submit-button">
-          <mat-icon  >upload</mat-icon>Upload CV
+          <mat-icon>upload</mat-icon>Upload CV
         </button>
         <span class="filename">{{ filecv ? filecv.name : 'No file selected' }}</span>
         <mat-error>

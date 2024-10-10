@@ -1,6 +1,6 @@
-<mat-toolbar color="primary" class="sidenav-container">
+<mat-toolbar color="primary" class="sidenav-container" role="navigation" >
   <div>CV.AI</div>
-  <mat-nav-list [class.desktop]="!(isHandset$ | async)">
+  <mat-nav-list [class.desktop]="!(isHandset$ | async)" aria-hidden="true" >
     @for(i of linkList; track i){
       @if(i.link.startsWith('http')){
         <a mat-list-item  [href]="[i.link]">{{i.name}}</a>
@@ -20,7 +20,7 @@
 </mat-toolbar>
 
 <div *ngIf="(isHandset$ | async) && menuVisible" class="nav-list mobile">
-  <mat-nav-list>
+  <mat-nav-list aria-hidden="true" >
     @for(i of linkList; track i){
       <a mat-list-item [routerLink]="[i.link]" >{{i.name}}</a>
     }

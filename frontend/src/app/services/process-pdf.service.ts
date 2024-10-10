@@ -24,10 +24,7 @@ export class ProcessPdfService {
   }
 
   sendGet(): Observable<any> {
-    const headers = new HttpHeaders({
-      'Access-Control-Allow-Origin': 'http://localhost:4200'
-    });
-    return this.http.get<string>(this.apiUrl, { headers, withCredentials: true })
+    return this.http.get(this.apiUrl, { observe: 'response', responseType: 'text' })
   }
 
 }

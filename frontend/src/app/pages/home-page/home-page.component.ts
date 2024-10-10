@@ -75,12 +75,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.subscription.add(this.processPdf.sendGet().subscribe({
       next: (response) => {
         if (response.status == 200) {
-          console.log('backend good');
           this.openSnackBar('The API is online, you can continue...', 'Close')
         }
       },
       error: (error) => {
-        console.error('Error al conectar con el backend:', error)
         this.openSnackBar('The API is offline, Chech the repository for more info...', 'Close')
       }
     }));
@@ -99,7 +97,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
           this.extractInformationFromText();
         },
         error: (error) => {
-          console.error('Error al enviar el archivo:', error)
           this.openSnackBar(error.error, 'Close')
         }
       }));
@@ -140,8 +137,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
           } else if (actualSimpleParagrah.lineText.length > 0) {
             this.recommendations.simpleParagraphs.push({ ...actualSimpleParagrah });
           }
-          console.log('actual-complex:', actualComplexParagrah )
-          console.log('actual-simple:', actualSimpleParagrah )
           stateParagrah = 0;
           actualComplexParagrah = initialComplexParagrah;
           actualSimpleParagrah = initialSimpleParagrah;
@@ -171,8 +166,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
     } else if (actualSimpleParagrah.lineText.length > 0) {
       this.recommendations.simpleParagraphs.push({ ...actualSimpleParagrah });
     }
-    console.log('actual-complex:', actualComplexParagrah )
-    console.log('actual-simple:', actualSimpleParagrah )
   }
 
 }

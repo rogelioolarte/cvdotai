@@ -1,12 +1,14 @@
-# analizeAI/views.py
 import os
 import PyPDF2
+import logging
 from datetime import datetime
 
-from django.http import HttpResponse
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 import google.generativeai as genai
+
+# Configurar logging
+logger = logging.getLogger(__name__)
 
 def index(request):
     now = datetime.now()
@@ -32,10 +34,9 @@ def post(request):
         pdf_file = request.FILES['resume_pdf']
         job_description = request.POST.get('job_description')
 
-        
         text_from_pdf = extract_text_from_pdf(pdf_file)
         if(len(text_from_pdf) <= 100):
-            return JsonResponse({'error': 'The PDF file does not have valid text or insufficient text. The PDF file must be more than 100 characters.'}, status=500)
+            return JsonResponse({'error': 'The PDF file does not have valid text or more than 100 characters.'}, status=500)
 
         genai.configure(api_key=os.environ.get("API_KEY"))
         if not os.environ.get("API_KEY"):
@@ -56,16 +57,20 @@ def post(request):
         return JsonResponse({'response_text': response.text})
 
     except KeyError as e:
-        return JsonResponse({'error': f'Missing key in request: {str(e)}'}, status=400)
+        logger.error(f"Missing key in request: {str(e)}")
+        return JsonResponse({'error': f'An unexpected error occurred, contact the administrator.'}, status=400)
 
     except PyPDF2.errors.PdfReadError as e:
-        return JsonResponse({'error': f'Error processing PDF file: {str(e)}'}, status=400)
+        logger.error(f"Error processing PDF file: {str(e)}")
+        return JsonResponse({'error': f'Error processing PDF file, contact the administrator.'}, status=400)
 
     except genai.exceptions.APIError as e:
-        return JsonResponse({'error': f'Error in Google Generative AI API: {str(e)}'}, status=500)
+        logger.error(f"Error in Google Generative AI API: {str(e)}")
+        return JsonResponse({'error': f'Error with Google Generative AI, contact the administrator.'}, status=500)
 
     except Exception as e:
-        return JsonResponse({'error': f'An unexpected error occurred: {str(e)}'}, status=500)
+        logger.error(f"An unexpected error occurred: {str(e)}")
+        return JsonResponse({'error': f'An unexpected error occurred, contact the administrator.'}, status=500)
 
 def extract_text_from_pdf(pdf_file):
     """Función para extraer texto de un archivo PDF"""

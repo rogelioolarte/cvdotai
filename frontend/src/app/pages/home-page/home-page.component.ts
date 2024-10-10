@@ -57,11 +57,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
-  openSnackBar(text: string, closeText: string) {
+  openSnackBar(text: string, closeText: string, duration?: number) {
     this._snackBar.open(text, closeText, {
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
-      duration: 2000
+      duration: duration
     });
   }
 
@@ -76,11 +76,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.subscription.add(this.processPdf.sendGet().subscribe({
       next: (response) => {
         if (response.status == 200) {
-          this.openSnackBar('The API is online, you can continue...', 'Close')
+          this.openSnackBar('The API is online, you can continue...', 'Close', 2000)
         }
       },
       error: (error) => {
-        this.openSnackBar('The API is offline, Chech the repository for more info...', 'Close')
+        this.openSnackBar('The API is offline, Chech the repository for more info...', 'Close', 3000)
       }
     }));
   }
@@ -98,7 +98,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
           this.extractInformationFromText();
         },
         error: (error) => {
-          this.openSnackBar(error.error, 'Close')
+          if (error.status === 400) {
+            if (error.error.error) {
+              this.openSnackBar(`Error: ${error.error.error}`, 'Close');
+            } else {
+              this.openSnackBar('Invalid request. Please check the inputs.', 'Close');
+            }
+          } else if (error.status === 500) {
+            this.openSnackBar(`Error: ${error.error.error}`, 'Close');
+          } else {
+            this.openSnackBar('An unexpected error occurred. Please try again.', 'Close');
+          }
         }
       }));
     }

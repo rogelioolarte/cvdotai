@@ -113,44 +113,4 @@
       }
     </div>
   }
-
-  <!-- @if(recommendations){
-    <div class="recommendations">
-      <h2 class="recommendations-title">{{ recommendations.title }}</h2>
-      <div class="recommendation-cards">
-        @for(recommendation of recommendations.simpleParagraphs; track recommendation){
-          <mat-card >
-            <mat-card-header>
-              <mat-card-title>{{ recommendation.title }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{ recommendation.lineText }}</p>
-            </mat-card-content>
-          </mat-card>
-        }
-      </div>
-      <div>
-        @for(recommendation of recommendations.complexParagraphs; track recommendation){
-          <mat-card >
-            <mat-card-header>
-              <mat-card-title>{{ recommendation.title }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              @for(subText of recommendation.subText; track subText){
-                <mat-card  >
-                  <mat-card-header>
-                    <mat-card-title>{{ subText.title }}</mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <p>{{ subText.lineText }}</p>
-                  </mat-card-content>
-                </mat-card>
-              }
-            </mat-card-content>
-          </mat-card>
-        }
-      </div>
-
-    </div>
-  } -->
 </div>

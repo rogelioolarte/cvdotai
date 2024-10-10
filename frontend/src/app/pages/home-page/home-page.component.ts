@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { MatIconModule } from '@angular/material/icon';
 import { ProcessPdfService } from '../../services/process-pdf.service';
 import { Subscription } from 'rxjs';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 interface ComplexParagrah {
   title: string;
@@ -41,17 +42,27 @@ interface ParsedData {
   styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
-  form: FormGroup;
-  filecv?: File;
-  recommendations: ParsedData = {
+  public form: FormGroup;
+  public filecv?: File;
+  public recommendations: ParsedData = {
     title: '',
     complexParagraphs: [],
     simpleParagraphs: [],
     annotations: []
   };
-  responseText: string = '';
+  public responseText: string = '';
   private processPdf = inject(ProcessPdfService);
-  subscription: Subscription = new Subscription();
+  private subscription: Subscription = new Subscription();
+  private _snackBar = inject(MatSnackBar);
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
+  openSnackBar(text: string, closeText: string) {
+    this._snackBar.open(text, closeText, {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+    });
+  }
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
@@ -65,9 +76,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
       next: (response) => {
         if (response.status == 200) {
           console.log('backend good');
+          this.openSnackBar('The API is online, you can continue...', 'Close')
         }
       },
-      error: (error) => console.error('Error al conectar con el backend:', error)
+      error: (error) => {
+        console.error('Error al conectar con el backend:', error)
+        this.openSnackBar('The API is offline, Chech the repository for more info...', 'Close')
+      }
     }));
   }
 
@@ -83,7 +98,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
           this.responseText = response.response_text;
           this.extractInformationFromText();
         },
-        error: (error) => console.error('Error al enviar el archivo:', error)
+        error: (error) => {
+          console.error('Error al enviar el archivo:', error)
+          this.openSnackBar(error.error, 'Close')
+        }
       }));
     }
   }

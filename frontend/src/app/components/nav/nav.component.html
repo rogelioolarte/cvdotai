@@ -1,0 +1,30 @@
+<mat-toolbar color="primary" class="sidenav-container">
+  <div>CV.AI</div>
+  <mat-nav-list [class.desktop]="!(isHandset$ | async)">
+    @for(i of linkList; track i){
+      @if(i.link.startsWith('http')){
+        <a mat-list-item  [href]="[i.link]">{{i.name}}</a>
+      } @else {
+        <a mat-list-item [routerLink]="[i.link]">{{i.name}}</a>
+      }
+    }
+  </mat-nav-list>
+  <button
+    *ngIf="isHandset$ | async"
+    type="button"
+    aria-label="Toggle menu"
+    mat-icon-button
+    (click)="toggleMenu()">
+    <mat-icon aria-label="Menu icon">menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div *ngIf="(isHandset$ | async) && menuVisible" class="nav-list mobile">
+  <mat-nav-list>
+    @for(i of linkList; track i){
+      <a mat-list-item [routerLink]="[i.link]" >{{i.name}}</a>
+    }
+  </mat-nav-list>
+</div>
+
+<router-outlet></router-outlet>

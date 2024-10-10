@@ -1,0 +1,156 @@
+<div class="container">
+  <h1 class="title">Recommendations for your CV</h1>
+  <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="form">
+    <div class="input-list">
+      <div class="job-input">
+        <mat-form-field appearance="fill">
+          <mat-label>Job Description</mat-label>
+          <textarea
+            matInput
+            id="job-description"
+            placeholder="Write your job description here..."
+            formControlName="jobDescription"></textarea>
+          @if(jobDescription?.invalid && (jobDescription?.dirty || jobDescription?.touched)){
+            <mat-error>
+              @if(jobDescription?.errors?.['required'] && jobDescription?.touched){
+                <span>This field is required</span>
+              }
+              @if(jobDescription?.errors?.['minlength'] && jobDescription?.touched){
+                <span>The description must be greater than 100 characters.</span>
+              }
+              @if(jobDescription?.errors?.['maxlength'] && jobDescription?.touched){
+                <span>The description cannot exceed 500 characters</span>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="file-input">
+        <mat-label class="hidden">Upload CV (PDF)</mat-label>
+        <input
+          id="cv-upload"
+          type="file"
+          accept=".pdf"
+          (change)="handleFileInput($event)"
+          class="hidden"
+        />
+        <button mat-button type="button" (click)="triggerFileUpload()" class="submit-button">
+          <mat-icon  >upload</mat-icon>Upload CV
+        </button>
+        <span class="filename">{{ filecv ? filecv.name : 'No file selected' }}</span>
+        <mat-error>
+          @if(form.get('filename')?.invalid && filecv){
+            @if(form.get('filename')?.errors?.['required'] && filecv){
+              <span>This field is required</span>
+            }
+            @if(form.get('filename')?.errors?.['pattern'] && filecv){
+              <span>A PDF file is required</span>
+            }
+          }
+        </mat-error>
+
+      </div>
+    </div>
+    <button mat-raised-button type="submit" color="primary" class="submit-button" [disabled]="form.invalid">
+      Get recommendations
+    </button>
+  </form>
+
+  @if(recommendations){
+    <div class="recommendations">
+      <h2 class="recommendations-title">{{ recommendations.title }}</h2>
+
+      <div class="simple-recommendations">
+        @for(recommendation of recommendations.simpleParagraphs; track recommendation){
+          <mat-card class="recommendation-card simple-card">
+            <mat-card-header>
+              <mat-card-title>{{ recommendation.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ recommendation.lineText }}</p>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+      <div class="complex-recommendations">
+        @for(recommendation of recommendations.complexParagraphs; track recommendation){
+          <mat-card class="recommendation-card complex-card">
+            <mat-card-header>
+              <mat-card-title>{{ recommendation.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="subtext-grid">
+                @for(subText of recommendation.subText; track subText){
+                  <mat-card class="subtext-card">
+                    <mat-card-header>
+                      <mat-card-title>{{ subText.title }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <p>{{ subText.lineText }}</p>
+                    </mat-card-content>
+                  </mat-card>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+      @if(recommendations.annotations.length > 0){
+        <mat-card class="recommendation-card annotations-card">
+          <mat-card-header>
+            <mat-card-title>Additional Notes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul class="annotations-list">
+              @for(annotation of recommendations.annotations; track annotation){
+                <li>{{ annotation }}</li>
+              }
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+
+  <!-- @if(recommendations){
+    <div class="recommendations">
+      <h2 class="recommendations-title">{{ recommendations.title }}</h2>
+      <div class="recommendation-cards">
+        @for(recommendation of recommendations.simpleParagraphs; track recommendation){
+          <mat-card >
+            <mat-card-header>
+              <mat-card-title>{{ recommendation.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ recommendation.lineText }}</p>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+      <div>
+        @for(recommendation of recommendations.complexParagraphs; track recommendation){
+          <mat-card >
+            <mat-card-header>
+              <mat-card-title>{{ recommendation.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @for(subText of recommendation.subText; track subText){
+                <mat-card  >
+                  <mat-card-header>
+                    <mat-card-title>{{ subText.title }}</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <p>{{ subText.lineText }}</p>
+                  </mat-card-content>
+                </mat-card>
+              }
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+    </div>
+  } -->
+</div>

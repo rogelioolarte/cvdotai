@@ -63,7 +63,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(this.processPdf.sendGet().subscribe({
       next: (response) => {
-        if (response.data === 'Backend Online') {
+        if (response) {
           console.log('backend good');
         }
       },

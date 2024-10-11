@@ -56,12 +56,16 @@
    In the backend, make sure to configure your Gemini AI API key in a `.env` file:
 
    ```bash
-   GEMINI_AI_API_KEY=your-api-key
+   AI_API_KEY=your-api-key
    ```
+   
+2. **Frontend Enviroment Variable:**
 
-2. **Database:**
+   In the frontend, make sure to configure your API_URL in a `.env` file:
 
-   Configure your database in Django's `settings.py`.
+   ```bash
+   NG_APP_API_URL=your-backend-url
+   ```
 
 ### Running
 

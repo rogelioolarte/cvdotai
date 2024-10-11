@@ -4,10 +4,11 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-nav',
@@ -38,6 +39,12 @@ export class NavComponent {
       map(result => result.matches),
       shareReplay()
     );
+
+  constructor(){
+    const iconRegistry = inject(MatIconRegistry);
+    const sanitizer = inject(DomSanitizer);
+    iconRegistry.addSvgIcon('menu', sanitizer.bypassSecurityTrustResourceUrl('menu.svg'));
+  }
 
   toggleMenu() {
     this.menuVisible = !this.menuVisible;

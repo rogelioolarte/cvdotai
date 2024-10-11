@@ -1,6 +1,6 @@
 <div class="container" role="main" >
   <h1 class="title">Recommendations for your CV</h1>
-  <p>Analyze your resume or resume in any language and get detailed recommendations.</p>
+  <h3 class="subtitle">Analyze your resume or resume in any language and get detailed recommendations.</h3>
   <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="form">
     <div class="input-list">
       <div class="job-input">
@@ -36,10 +36,10 @@
           class="hidden"
           aria-hidden="true"
         />
-        <button mat-button type="button" (click)="triggerFileUpload()" class="submit-button">
-          <mat-icon>upload</mat-icon>Upload CV
+        <button mat-button type="button" (click)="triggerFileUpload()" class="file-button">
+          <mat-icon aria-hidden="false" aria-label="Upload icon" svgIcon="upload" >upload</mat-icon>Upload CV
         </button>
-        <span class="filename">{{ filecv ? filecv.name : 'No file selected' }}</span>
+        <span class="filename">{{ filecv?.name }}</span>
         <mat-error>
           @if(form.get('filename')?.invalid && filecv){
             @if(form.get('filename')?.errors?.['required'] && filecv){
@@ -53,66 +53,67 @@
 
       </div>
     </div>
-    <button mat-raised-button type="submit" color="primary" class="submit-button" [disabled]="form.invalid">
-      Get recommendations
+    <button mat-flat-button type="submit" color="primary" class="submit-button" [disabled]="form.invalid"
+      (mouseenter)="iconStyle = 'transform: translateX(-1rem) rotate(-60deg)'"
+      (mouseleave)="iconStyle = ''"
+    >
+      <span>Get recommendations</span>
+      <mat-icon [style]="iconStyle" aria-hidden="false" aria-label="Send icon"
+        svgIcon="send" class="send-icon" ></mat-icon>
     </button>
   </form>
 
-  @if(recommendations.title.length > 0){
+  @if(recommendations.title && recommendations.title.length > 0){
     <div class="recommendations">
-      <h2 class="recommendations-title">{{ recommendations.title || "Recommendations" }}</h2>
-
+      <h2 class="recommendations-title">{{ recommendations.title }}</h2>
+    @if(recommendations.simpleParagraphs[0]){
       <div class="simple-recommendations">
-        @for(recommendation of recommendations.simpleParagraphs; track recommendation){
-          <mat-card class="recommendation-card simple-card">
-            <mat-card-header>
-              <mat-card-title>{{ recommendation.title }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{ recommendation.lineText }}</p>
-            </mat-card-content>
-          </mat-card>
-        }
-      </div>
-
-      <div class="complex-recommendations">
-        @for(recommendation of recommendations.complexParagraphs; track recommendation){
-          <mat-card class="recommendation-card complex-card">
-            <mat-card-header>
-              <mat-card-title>{{ recommendation.title }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="subtext-grid">
-                @for(subText of recommendation.subText; track subText){
-                  <mat-card class="subtext-card">
-                    <mat-card-header>
-                      <mat-card-title>{{ subText.title }}</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                      <p>{{ subText.lineText }}</p>
-                    </mat-card-content>
-                  </mat-card>
-                }
-              </div>
-            </mat-card-content>
-          </mat-card>
-        }
-      </div>
-
-      @if(recommendations.annotations.length > 0){
-        <mat-card class="recommendation-card annotations-card">
+        <mat-card class="recommendation-card simple-card">
           <mat-card-header>
-            <mat-card-title>Additional Notes</mat-card-title>
+            <mat-card-title>{{ recommendations.simpleParagraphs[0].title || "" }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <ul class="annotations-list">
-              @for(annotation of recommendations.annotations; track annotation){
-                <li>{{ annotation }}</li>
-              }
-            </ul>
+            <p>{{ recommendations.simpleParagraphs[0].lineText }}</p>
           </mat-card-content>
         </mat-card>
+      </div>
+    }
+
+
+      <mat-accordion>
+        @for(recommendation of recommendations.complexParagraphs; track recommendation){
+        <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>
+                <mat-icon color="primary" aria-hidden="false" class="svg-icon"
+                  aria-label="Check circle icon" svgIcon="check-circle"/>
+              </span>
+              {{ recommendation.title }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul>
+            @for(subText of recommendation.subText; track subText){
+              <li><strong>{{ subText.title }}:</strong> {{ subText.lineText }}</li>
+            }
+          </ul>
+        </mat-expansion-panel>
+        }
+      </mat-accordion>
+
+      @if(recommendations.simpleParagraphs[1]){
+        <div class="simple-recommendations">
+          <mat-card class="recommendation-card simple-card">
+            <mat-card-header>
+              <mat-card-title>{{ recommendations.simpleParagraphs[1].title || "" }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ recommendations.simpleParagraphs[1].lineText }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
       }
     </div>
+
   }
 </div>

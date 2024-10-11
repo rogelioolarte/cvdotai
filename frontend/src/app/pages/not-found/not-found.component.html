@@ -1,17 +1,22 @@
-<div class="not-found-container" fxLayout="column" fxLayoutAlign="center center">
-  <mat-card>
-    <mat-card-header class="center" >
-      <mat-card-title>
-        <h1>404 - Page not found</h1>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Sorry, the page you are looking for does not exist.</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="goToHome()">
-        Back to main page
-      </button>
-    </mat-card-actions>
-  </mat-card>
+<div class="error-section">
+  <div>
+    <!-- Icono de bandera -->
+    <mat-icon aria-hidden="false" aria-label="Flag icon"
+        svgIcon="flag" class="flag-icon" />
+
+    <!-- Título del error -->
+    <h1 class="error-title mt-10">
+      Error 404 <br /> It looks like something went wrong.
+    </h1>
+
+    <!-- Mensaje de error -->
+    <p class="error-message mt-8 mb-14">
+      Sorry, the page you are looking for does not exist.
+    </p>
+
+    <!-- Botón de regreso a la página principal -->
+    <button mat-raised-button color="primary" class="back-home-button" (click)="goToHome()" >
+      Back Home
+    </button>
+  </div>
 </div>

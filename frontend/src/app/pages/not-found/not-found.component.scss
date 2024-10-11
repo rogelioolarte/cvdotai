@@ -1,49 +1,47 @@
-.not-found-container {
+.error-section {
   height: 80%;
-  display: flex;
-  justify-content: center;
-  margin: 2rem;
-  background-color: white;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
 
-  mat-card {
-    max-width: 25rem;
-    margin-top: 10%;
-    width: 23rem;
-    height: 17rem;
-    text-align: center;
+.flag-icon {
+  height: 10rem;
+  width: 10rem;
+  margin: 0 auto;
+  display: block;
+}
 
-    .center {
-      display: flex;
-      justify-content: center;
-    }
+.error-title {
+  font-size: 2rem; /* Tamaño para pantallas pequeñas (equivalente a text-3xl) */
+  line-height: 1.2; /* Propiedad leading-snug */
+  color: #374151; /* blue-gray en Tailwind */
 
-    mat-card-title h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    mat-card-content p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-
-    mat-card-actions {
-      justify-content: center;
-    }
+  @media (min-width: 768px) {
+    font-size: 2.5rem; /* Tamaño para pantallas medianas y superiores (md:text-4xl) */
   }
 }
 
-@media (max-width: 37.5rem) {
-  .not-found-container {
-    mat-card {
+.error-message {
+  font-size: 18px; /* Tamaño personalizado */
+  font-weight: 400; /* Equivalente a font-normal */
+  color: #6b7280; /* text-gray-500 en Tailwind */
+  margin-left: auto;
+  margin-right: auto;
 
-      mat-card-title h1 {
-        font-size: 1.5rem;
-      }
+  @media (min-width: 768px) {
+    max-width: 24rem; /* Equivalente a md:max-w-sm */
+  }
+}
 
-      mat-card-content p {
-        font-size: 1rem;
-      }
-    }
+.back-home-button {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media (min-width: 768px) {
+    width: 8rem; /* Ancho personalizado para pantallas medianas y superiores */
   }
 }

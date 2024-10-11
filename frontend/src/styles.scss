@@ -10,6 +10,25 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+// Intentional name
+@font-face {
+  font-family: 'Robotto';
+  src: url('/assets/fonts/Roboto-Black.ttf') format('tff'),
+       url('/assets/fonts/Roboto-BlackItalic.tff') format('tff'),
+       url('/assets/fonts/Roboto-Bold.tff') format('tff'),
+       url('/assets/fonts/Roboto-BoldItalic.tff') format('tff'),
+       url('/assets/fonts/Roboto-Italic.tff') format('tff'),
+       url('/assets/fonts/Roboto-Light.tff') format('tff'),
+       url('/assets/fonts/Roboto-LightItalic.tff') format('tff'),
+       url('/assets/fonts/Roboto-Medium.tff') format('tff'),
+       url('/assets/fonts/Roboto-MediumItalic.tff') format('tff'),
+       url('/assets/fonts/Roboto-Regular.tff') format('tff'),
+       url('/assets/fonts/Roboto-Thin.tff') format('tff'),
+       url('/assets/fonts/Roboto-ThinItalic.tff') format('tff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 // Define the theme object.
 $cvdotai-theme: mat.define-theme((
   color: (
@@ -38,12 +57,4 @@ $cvdotai-theme: mat.define-theme((
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: "Roboto", "Helvetica Neue", sans-serif; }
-
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
-}
+body { margin: 0; font-family: "Robotto", sans-serif; }

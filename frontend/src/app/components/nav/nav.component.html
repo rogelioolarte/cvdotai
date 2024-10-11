@@ -3,7 +3,7 @@
   <mat-nav-list [class.desktop]="!(isHandset$ | async)" aria-hidden="true" >
     @for(i of linkList; track i){
       @if(i.link.startsWith('http')){
-        <a mat-list-item  [href]="[i.link]" target="_blank" rel="noopener" >{{ i.name }}</a>
+        <a mat-list-item  [href]="[i.link]" target="_blank">{{ i.name }}</a>
       } @else {
         <a mat-list-item [routerLink]="[i.link]">{{i.name}}</a>
       }

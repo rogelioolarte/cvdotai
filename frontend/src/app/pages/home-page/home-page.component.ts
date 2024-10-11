@@ -99,7 +99,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     if (this.form.valid && this.filecv) {
-      this.openSnackBar('Processing...', 'Close');
+      this.recommendations = {
+        title: '',
+        complexParagraphs: [],
+        simpleParagraphs: []
+      };
+      this.openSnackBar('Processing...', 'Close', 5000);
       const jobDescription = this.form.get('jobDescription')?.value;
       this.subscription.add(this.processPdf.sendPDFandDescription(this.filecv, jobDescription).subscribe({
         next: (response) => {

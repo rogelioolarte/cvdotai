@@ -89,7 +89,7 @@
 
 ## Usage
 
-1. Upload a resumé in PDF or Word format.
+1. Upload a resumé in PDF.
 2. Enter the text of the job offer.
 3. Receive recommendations to improve the match between the candidate’s profile and the job offer.
 

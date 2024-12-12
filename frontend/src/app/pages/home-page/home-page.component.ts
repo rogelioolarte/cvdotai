@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -11,23 +11,6 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { marked } from 'marked';
-
-interface ComplexParagrah {
-  title: string;
-  subText: SimpleParagrah[]
-}
-
-interface SimpleParagrah {
-  title: string;
-  lineText: string;
-}
-
-interface ParsedData {
-  title: string;
-  complexParagraphs: ComplexParagrah[];
-  simpleParagraphs: SimpleParagrah[];
-  alternativeParagraphs: String[];
-}
 
 @Component({
   selector: 'app-home-page',
@@ -76,7 +59,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        this.openSnackBar('⛔ API Offline, Chech the repository for more info...', 'Close', 3000)
+        this.openSnackBar('⛔ API Offline, Check the repository for more info...', 'Close', 3000)
+        console.log("Error while connecting API", error)
       }
     }));
   }

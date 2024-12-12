@@ -11,13 +11,6 @@
 @include mat.core();
 
 // Intentional name
-@font-face {
-  font-style: normal;
-  font-feature-settings: normal;
-  font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI",
-    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-  font-variation-settings: normal;
-}
 
 // Define the theme object.
 $cvdotai-theme: mat.define-theme((
@@ -47,4 +40,11 @@ $cvdotai-theme: mat.define-theme((
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: "Robotto", sans-serif; }
+body {
+  margin: 0;
+  font-style: normal;
+  font-feature-settings: normal;
+  font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI",
+  Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  font-variation-settings: normal;
+}

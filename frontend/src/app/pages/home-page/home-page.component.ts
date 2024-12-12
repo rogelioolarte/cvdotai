@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { marked } from 'marked';
 
 interface ComplexParagrah {
   title: string;
@@ -25,6 +26,7 @@ interface ParsedData {
   title: string;
   complexParagraphs: ComplexParagrah[];
   simpleParagraphs: SimpleParagrah[];
+  alternativeParagraphs: String[];
 }
 
 @Component({
@@ -45,19 +47,13 @@ interface ParsedData {
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   public form: FormGroup;
-  public filecv?: File;
-  public recommendations: ParsedData = {
-    title: '',
-    complexParagraphs: [],
-    simpleParagraphs: []
-  };
-  public responseText: string = '';
+  public fileCv?: File;
+  @ViewChild('response') public responseBody: ElementRef<HTMLDivElement> | undefined;
   private processPdf = inject(ProcessPdfService);
   private subscription: Subscription = new Subscription();
   private _snackBar = inject(MatSnackBar);
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-  readonly panelOpenState = signal(false);
   public iconStyle: string = "";
 
   constructor(private formBuilder: FormBuilder) {
@@ -98,18 +94,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit() {
-    if (this.form.valid && this.filecv) {
-      this.recommendations = {
-        title: '',
-        complexParagraphs: [],
-        simpleParagraphs: []
-      };
+    if (this.form.valid && this.fileCv) {
       this.openSnackBar('Processing...', 'Close', 5000);
       const jobDescription = this.form.get('jobDescription')?.value;
-      this.subscription.add(this.processPdf.sendPDFandDescription(this.filecv, jobDescription).subscribe({
+      this.subscription.add(this.processPdf.sendPDFAndDescription(this.fileCv, jobDescription).subscribe({
         next: (response) => {
-          this.responseText = response.response_text;
-          this.extractInformationFromText();
+          this.convertMarkdownToHTML(response.response_text);
         },
         error: (error) => {
           if (error.status === 400) {
@@ -131,8 +121,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
   handleFileInput(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.filecv = input.files[0];
-      this.form.patchValue({ filename: this.filecv.name });
+      this.fileCv = input.files[0];
+      this.form.patchValue({ filename: this.fileCv.name });
     }
   }
 
@@ -144,49 +134,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
     return this.form.get('jobDescription');
   }
 
-
-  extractInformationFromText() {
-    let stateParagrah: number = 0;
-    let actualComplexParagrah: ComplexParagrah = { title: "", subText: [] };
-    let actualSimpleParagrah: SimpleParagrah = { title: "", lineText: "" };
-    let array_length = 0;
-
-    this.responseText.trim().split('\n').forEach((line, index, array) => {
-      if(line.startsWith('## ')) {
-        this.recommendations.title = line.replace('## ', '').trim();
-        array_length = array.length;
-      } else if(line.startsWith('**') && this.recommendations.title.length > 0 ) {
-        if (actualComplexParagrah.subText.length > 0) {
-          this.recommendations.complexParagraphs.push({ ...actualComplexParagrah });
-          actualComplexParagrah = { title: "", subText: [] };
-        } else if (actualSimpleParagrah.lineText.length > 0) {
-          this.recommendations.simpleParagraphs.push({ ...actualSimpleParagrah });
-          actualSimpleParagrah = { title: "", lineText: "" };
-        }
-        actualComplexParagrah.title = line.replace(/\*\*/g, '')
-            .replace(/g\*\*/, '').replace(':', '').trim();
-        actualSimpleParagrah.title = actualComplexParagrah.title;
-        stateParagrah = stateParagrah + 1;
-      } else if(line.startsWith('* **') && actualComplexParagrah.title.length > 0) {
-        let temp_line = line.split('**');
-        actualComplexParagrah.subText.push({
-          title: temp_line[1].replace(/:$/, '').trim(),
-          lineText: temp_line[2].trim()
-        });
-      } else if(!line.startsWith('* **') && !line.startsWith('**') &&line !== '' &&
-          actualSimpleParagrah.title.length > 0 ) {
-        actualSimpleParagrah.lineText += line + ' ';
+  convertMarkdownToHTML(markdownText: string) {
+    const mdBlockElement = this.responseBody?.nativeElement;
+    if(mdBlockElement != undefined) {
+      mdBlockElement.classList.add('markdown-body');
+      try {
+        mdBlockElement.innerHTML = <string>marked.parse(markdownText);
+      } catch (error) {
+        mdBlockElement.textContent = "Error processing Markdown content. Please contact the administrator..";
       }
-      if(index+1 === array_length){
-        if (actualComplexParagrah.subText.length > 0) {
-          this.recommendations.complexParagraphs.push({ ...actualComplexParagrah });
-          actualComplexParagrah = { title: "", subText: [] };
-        } else if (actualSimpleParagrah.lineText.length > 0) {
-          this.recommendations.simpleParagraphs.push({ ...actualSimpleParagrah });
-          actualSimpleParagrah = { title: "", lineText: "" };
-        }
-      }
-    })
+    }
+
   }
 
 }

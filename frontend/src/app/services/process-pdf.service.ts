@@ -11,7 +11,7 @@ export class ProcessPdfService {
 
   constructor(private http: HttpClient) { }
 
-  sendPDFandDescription(file: File, jobDescription: string): Observable<any> {
+  sendPDFAndDescription(file: File, jobDescription: string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('resume_pdf', file, file.name);
     formData.append('job_description', jobDescription);

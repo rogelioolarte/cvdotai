@@ -11,15 +11,15 @@
             id="job-description"
             placeholder="Write your job description here...."
             formControlName="jobDescription"></textarea>
-          @if(jobDescription?.invalid && (jobDescription?.dirty || jobDescription?.touched)){
+          @if(jobDescription?.invalid && (jobDescription?.dirty || !jobDescription?.untouched)){
             <mat-error>
-              @if(jobDescription?.errors?.['required'] && jobDescription?.touched){
+              @if(jobDescription?.hasError('required')){
                 <span >This field is required</span>
               }
-              @if(jobDescription?.errors?.['minlength'] && jobDescription?.touched){
+              @if(jobDescription?.hasError('minlength')){
                 <span>The description must be greater than 100 characters.</span>
               }
-              @if(jobDescription?.errors?.['maxlength'] && jobDescription?.touched){
+              @if(jobDescription?.hasError('maxlength')){
                 <span>The description cannot exceed 3000 characters</span>
               }
             </mat-error>
@@ -39,13 +39,13 @@
         <button mat-button type="button" (click)="triggerFileUpload()" class="file-button">
           <mat-icon aria-hidden="false" aria-label="Upload icon" svgIcon="upload" >upload</mat-icon>Upload CV
         </button>
-        <span class="filename">{{ filecv?.name }}</span>
+        <span class="filename">{{ fileCv?.name }}</span>
         <mat-error>
-          @if(form.get('filename')?.invalid && filecv){
-            @if(form.get('filename')?.errors?.['required'] && filecv){
+          @if(form.get('filename')?.invalid && fileCv){
+            @if(form.get('filename')?.errors?.['required'] && fileCv){
               <span>This field is required</span>
             }
-            @if(form.get('filename')?.errors?.['pattern'] && filecv){
+            @if(form.get('filename')?.errors?.['pattern'] && fileCv){
               <span>A PDF file is required</span>
             }
           }
@@ -63,57 +63,7 @@
     </button>
   </form>
 
-  @if(recommendations.title && recommendations.title.length > 0){
-    <div class="recommendations">
-      <h2 class="recommendations-title">{{ recommendations.title }}</h2>
-    @if(recommendations.simpleParagraphs[0]){
-      <div class="simple-recommendations">
-        <mat-card class="recommendation-card simple-card">
-          <mat-card-header>
-            <mat-card-title>{{ recommendations.simpleParagraphs[0].title || "" }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ recommendations.simpleParagraphs[0].lineText }}</p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    }
+  <div #response>
+  </div>
 
-
-      <mat-accordion>
-        @for(recommendation of recommendations.complexParagraphs; track recommendation){
-        <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <span>
-                <mat-icon color="primary" aria-hidden="false" class="svg-icon"
-                  aria-label="Check circle icon" svgIcon="check-circle"/>
-              </span>
-              {{ recommendation.title }}
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <ul>
-            @for(subText of recommendation.subText; track subText){
-              <li><strong>{{ subText.title }}:</strong> {{ subText.lineText }}</li>
-            }
-          </ul>
-        </mat-expansion-panel>
-        }
-      </mat-accordion>
-
-      @if(recommendations.simpleParagraphs[1]){
-        <div class="simple-recommendations">
-          <mat-card class="recommendation-card simple-card">
-            <mat-card-header>
-              <mat-card-title>{{ recommendations.simpleParagraphs[1].title || "" }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{ recommendations.simpleParagraphs[1].lineText }}</p>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      }
-    </div>
-
-  }
 </div>
